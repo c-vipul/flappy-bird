@@ -30,12 +30,28 @@ setInterval(bird.flap, 100);
 const gap = 85;
 bird.posX = 10;
 bird.posY = 150;
-gravity = 3;
+gravity = 2;
+
+const pipes = [];
+pipes[0] = {
+    posX: canvas.width,
+    posY: -78
+}
 
 const drawSprites = () => {
     ctx.drawImage(background, 0, 0);
-    ctx.drawImage(pipeTop, 160, -100);
-    ctx.drawImage(pipeBottom, 160, pipeTop.height-100 + gap);
+    pipes.forEach((pipe) => {
+        ctx.drawImage(pipeTop, pipe.posX, pipe.posY);
+        ctx.drawImage(pipeBottom, pipe.posX, pipeTop.height + pipe.posY + gap);
+        pipe.posX--;
+        if (pipe.posX === 125) {
+            pipes.push({
+                posX: canvas.width,
+                posY: Math.floor(Math.random() * pipeTop.height) - pipeTop.height
+            });
+        }
+    });
+
     ctx.drawImage(base, 0, background.height - base.height);
     ctx.drawImage(bird, bird.posX, bird.posY);
 
@@ -46,7 +62,7 @@ drawSprites();
 
 
 document.addEventListener('keydown', (e) => {
-    bird.posY -= 80;
+    bird.posY -= 50;
 });
 
 
