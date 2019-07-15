@@ -73,6 +73,9 @@ const drawSprites = () => {
         ctx.drawImage(score, 120 + (i*25), 50);
     });
     if (gameOver.status) {
+        ctx.fillStyle ="#fff";
+        ctx.font = "22px flappy_birdregular";
+        ctx.fillText("Press any key to restart.", 55, 260);
         return ctx.drawImage(gameOver, 50, 180);
     }
 
@@ -84,4 +87,7 @@ drawSprites();
 
 document.addEventListener('keydown', (e) => {
     bird.posY -= 50;
+    if (gameOver.status) {
+        window.location.reload();
+    }
 });
