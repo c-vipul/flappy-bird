@@ -56,7 +56,7 @@ const drawSprites = () => {
                 posY: Math.floor(Math.random() * pipeTop.height) - pipeTop.height
             });
         }
-        if (bird.posX + bird.width >= pipe.posX && bird.posX <= pipe.posX + pipeTop.width && (bird.posY <= pipe.posY + pipeTop.height || bird.posY + bird.height >= pipeTop.height + pipe.posY + gap) || bird.height >= background.height - base.height) {
+        if (bird.posX + bird.width >= pipe.posX && bird.posX <= pipe.posX + pipeTop.width && (bird.posY <= pipe.posY + pipeTop.height || bird.posY + bird.height >= pipeTop.height + pipe.posY + gap) || bird.posY + bird.height >= background.height - base.height) {
             gameOver.status = true;
         }
         if (pipe.posX === 10) {
