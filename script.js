@@ -11,6 +11,7 @@ const sounds = {
 const backgroundImgs = ['assets/background-day.png', 'assets/background-night.png'];
 const birdImgsUp = ['assets/yellowbird-upflap-up.png', 'assets/yellowbird-midflap-up.png', 'assets/yellowbird-downflap-up.png'];
 const birdImgsDown = ['assets/yellowbird-upflap-down.png', 'assets/yellowbird-midflap-down.png', 'assets/yellowbird-downflap-down.png'];
+const birdImgsStraight = ['assets/yellowbird-upflap.png', 'assets/yellowbird-midflap.png', 'assets/yellowbird-downflap.png'];
 let birdImgs = ['assets/yellowbird-upflap.png', 'assets/yellowbird-midflap.png', 'assets/yellowbird-downflap.png'];
 
 const loadedImages = {};
@@ -54,6 +55,17 @@ function imgAssign() {
     score.count = 0;
     gameOver.status = false;
 }
+
+let timeoutBirdStraight;
+let timeoutBirdDown;
+let timeoutGravity
+timeoutBirdStraight = setTimeout(() => {
+    birdImgs = birdImgsStraight;
+    timeoutBirdDown = setTimeout(() => {
+        birdImgs = birdImgsDown;
+    }, 300);
+}, 300);
+
 
 const gap = 90;
 let gravity = 2;
@@ -102,9 +114,9 @@ function drawSprites() {
 }
 
 
-let timeoutBirdDown;
-let timeoutGravity
+
 document.addEventListener('keydown', (e) => {
+    clearTimeout(timeoutBirdStraight);
     clearTimeout(timeoutBirdDown);
     clearTimeout(timeoutGravity);
     gravity = 0;
@@ -120,8 +132,11 @@ document.addEventListener('keyup', (e) => {
     timeoutGravity = setTimeout(() => {
         gravity = 2;
     }, 100);
-    timeoutBirdDown = setTimeout(() => {
-        birdImgs = birdImgsDown;
+    timeoutBirdStraight = setTimeout(() => {
+        birdImgs = birdImgsStraight;
+        timeoutBirdDown = setTimeout(() => {
+            birdImgs = birdImgsDown;
+        }, 300);
     }, 300);
 });
 
