@@ -1,50 +1,62 @@
 const canvas = document.querySelector('canvas');
 const ctx = canvas.getContext('2d');
 
-const background = new Image();
-const pipeTop = new Image();
-const pipeBottom = new Image();
-const bird = new Image();
-const base = new Image();
-const score = new Image();
-const gameOver = new Image();
+const images = ['assets/background-day.png', 'assets/background-night.png', 'assets/yellowbird-upflap.png', 'assets/yellowbird-midflap.png', 'assets/yellowbird-downflap.png', 'assets/pipe-green-top.png', 'assets/pipe-green.png', 'assets/base.png', 'assets/0.png', 'assets/1.png', 'assets/2.png', 'assets/3.png', 'assets/4.png', 'assets/5.png', 'assets/6.png', 'assets/7.png', 'assets/8.png', 'assets/9.png', 'assets/gameover.png'];
 
 backgroundImgs = ['assets/background-day.png', 'assets/background-night.png'];
 birdImgs = ['assets/yellowbird-upflap.png', 'assets/yellowbird-midflap.png', 'assets/yellowbird-downflap.png'];
 
-background.src = backgroundImgs[Math.floor(Math.random() * backgroundImgs.length)];
-pipeTop.src = 'assets/pipe-green-top.png';
-pipeBottom.src = 'assets/pipe-green.png';
-base.src = 'assets/base.png';
-score.src = 'assets/0.png';
-gameOver.src = 'assets/gameover.png';
+const loadedImages = {};
+const promiseArray = images.map(function (imgurl) {
+    const prom = new Promise(function (resolve, reject) {
+        const img = new Image();
+        img.onload = function () {
+            loadedImages[imgurl] = img;
+            resolve();
+        };
+        img.src = imgurl;
+    });
+    return prom;
+});
 
-background.onload = () => {
+Promise.all(promiseArray)
+    .then(imgAssign)
+    .then(drawSprites);
+
+let background, pipeTop, pipeBottom, bird, base, score, gameOver, flapCount = 0;
+
+function imgAssign() {
+    background = loadedImages['assets/background-day.png'];
+    pipeTop = loadedImages['assets/pipe-green-top.png'];
+    pipeBottom = loadedImages['assets/pipe-green.png'];
+    base = loadedImages['assets/base.png'];
+    score = loadedImages['assets/0.png'];
+    gameOver = loadedImages['assets/gameover.png'];
+    bird = loadedImages['assets/yellowbird-upflap.png'];
+
     canvas.width = background.width;
     canvas.height = background.height;
-};
 
-let c = 0;
-bird.flap = () => {
-    bird.src = birdImgs[c++ % birdImgs.length];
+    bird.flap = () => {
+        bird.src = birdImgs[flapCount++ % birdImgs.length];
+    }
+    setInterval(bird.flap, 100)
+
+    bird.posX = 130;
+    bird.posY = 150;
+    score.count = 0;
+    gameOver.status = false;
 }
-setInterval(bird.flap, 100);
 
-
-const gap = 85;
-bird.posX = 10;
-bird.posY = 150;
-gravity = 2;
-score.count = 10;
-gameOver.status = false;
-
+const gap = 90;
+const gravity = 2;
 const pipes = [];
 pipes[0] = {
     posX: canvas.width,
     posY: -78
-}
+};
 
-const drawSprites = () => {
+function drawSprites() {
     ctx.drawImage(background, 0, 0);
     pipes.forEach((pipe) => {
         ctx.drawImage(pipeTop, pipe.posX, pipe.posY);
@@ -59,16 +71,14 @@ const drawSprites = () => {
         if (bird.posX + bird.width >= pipe.posX && bird.posX <= pipe.posX + pipeTop.width && (bird.posY <= pipe.posY + pipeTop.height || bird.posY + bird.height >= pipeTop.height + pipe.posY + gap) || bird.posY + bird.height >= background.height - base.height) {
             gameOver.status = true;
         }
-        if (pipe.posX === 10) {
+        if (pipe.posX === 130) {
             score.count++;
         }
     });
 
     ctx.drawImage(base, 0, background.height - base.height);
     ctx.drawImage(bird, bird.posX, bird.posY);
-    // console.log(score.count.toString().split(''));
     score.count.toString().split('').forEach((num, i) => {
-        console.log(num)
         score.src = `assets/${num}.png`;
         ctx.drawImage(score, 120 + (i*25), 50);
     });
@@ -81,12 +91,12 @@ const drawSprites = () => {
 
     bird.posY += gravity;
     window.requestAnimationFrame(drawSprites);
-};
-drawSprites();
+}
+
 
 
 document.addEventListener('keydown', (e) => {
-    bird.posY -= 50;
+    bird.posY -= 40;
     if (gameOver.status) {
         window.location.reload();
     }
