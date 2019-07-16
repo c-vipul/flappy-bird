@@ -1,15 +1,17 @@
 const canvas = document.querySelector('canvas');
 const ctx = canvas.getContext('2d');
 
-const images = ['assets/background-day.png', 'assets/background-night.png', 'assets/yellowbird-upflap.png', 'assets/yellowbird-midflap.png', 'assets/yellowbird-downflap.png', 'assets/pipe-green-top.png', 'assets/pipe-green.png', 'assets/base.png', 'assets/0.png', 'assets/1.png', 'assets/2.png', 'assets/3.png', 'assets/4.png', 'assets/5.png', 'assets/6.png', 'assets/7.png', 'assets/8.png', 'assets/9.png', 'assets/gameover.png'];
+const images = ['assets/background-day.png', 'assets/background-night.png', 'assets/yellowbird-upflap.png', 'assets/yellowbird-upflap-up.png', 'assets/yellowbird-upflap-down.png','assets/yellowbird-midflap.png', 'assets/yellowbird-midflap-up.png', 'assets/yellowbird-upflap-down.png', 'assets/yellowbird-downflap.png', 'assets/yellowbird-downflap-up.png', 'assets/yellowbird-downflap-down.png','assets/pipe-green-top.png', 'assets/pipe-green.png', 'assets/base.png', 'assets/0.png', 'assets/1.png', 'assets/2.png', 'assets/3.png', 'assets/4.png', 'assets/5.png', 'assets/6.png', 'assets/7.png', 'assets/8.png', 'assets/9.png', 'assets/gameover.png'];
 
 const sounds = {
     fly: new Audio('sounds/fly.mp3'),
     score: new Audio('sounds/score.mp3')
 };
 
-backgroundImgs = ['assets/background-day.png', 'assets/background-night.png'];
-birdImgs = ['assets/yellowbird-upflap.png', 'assets/yellowbird-midflap.png', 'assets/yellowbird-downflap.png'];
+const backgroundImgs = ['assets/background-day.png', 'assets/background-night.png'];
+const birdImgsUp = ['assets/yellowbird-upflap-up.png', 'assets/yellowbird-midflap-up.png', 'assets/yellowbird-downflap-up.png'];
+const birdImgsDown = ['assets/yellowbird-upflap-down.png', 'assets/yellowbird-midflap-down.png', 'assets/yellowbird-downflap-down.png'];
+let birdImgs = ['assets/yellowbird-upflap.png', 'assets/yellowbird-midflap.png', 'assets/yellowbird-downflap.png'];
 
 const loadedImages = {};
 const promiseArray = images.map(function (imgurl) {
@@ -54,7 +56,7 @@ function imgAssign() {
 }
 
 const gap = 90;
-const gravity = 2;
+let gravity = 2;
 const pipes = [];
 pipes[0] = {
     posX: canvas.width,
@@ -94,26 +96,33 @@ function drawSprites() {
         ctx.fillText("Press any key to restart.", 55, 260);
         return ctx.drawImage(gameOver, 50, 180);
     }
-
+    
     bird.posY += gravity;
     window.requestAnimationFrame(drawSprites);
 }
 
 
-
+let timeoutBirdDown;
+let timeoutGravity
 document.addEventListener('keydown', (e) => {
-
-    // ctx.translate(bird.posX, bird.posY);
-    // ctx.rotate(-30 + Math.PI / 2.0);
-    // ctx.drawImage(bird, bird.posX, bird.posY);
-    // ctx.rotate(30 - Math.PI / 2.0);
-    // ctx.translate(-bird.posX, -bird.posY); 
-
+    clearTimeout(timeoutBirdDown);
+    clearTimeout(timeoutGravity);
+    gravity = 0;
     sounds.fly.play();
+    birdImgs = birdImgsUp;
     bird.posY -= 40;
     if (gameOver.status) {
         window.location.reload();
     }
+});
+
+document.addEventListener('keyup', (e) => {
+    timeoutGravity = setTimeout(() => {
+        gravity = 2;
+    }, 100);
+    timeoutBirdDown = setTimeout(() => {
+        birdImgs = birdImgsDown;
+    }, 300);
 });
 
 
