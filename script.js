@@ -3,6 +3,11 @@ const ctx = canvas.getContext('2d');
 
 const images = ['assets/background-day.png', 'assets/background-night.png', 'assets/yellowbird-upflap.png', 'assets/yellowbird-midflap.png', 'assets/yellowbird-downflap.png', 'assets/pipe-green-top.png', 'assets/pipe-green.png', 'assets/base.png', 'assets/0.png', 'assets/1.png', 'assets/2.png', 'assets/3.png', 'assets/4.png', 'assets/5.png', 'assets/6.png', 'assets/7.png', 'assets/8.png', 'assets/9.png', 'assets/gameover.png'];
 
+const sounds = {
+    fly: new Audio('sounds/fly.mp3'),
+    score: new Audio('sounds/score.mp3')
+};
+
 backgroundImgs = ['assets/background-day.png', 'assets/background-night.png'];
 birdImgs = ['assets/yellowbird-upflap.png', 'assets/yellowbird-midflap.png', 'assets/yellowbird-downflap.png'];
 
@@ -72,6 +77,7 @@ function drawSprites() {
             gameOver.status = true;
         }
         if (pipe.posX === 130) {
+            sounds.score.play();
             score.count++;
         }
     });
@@ -96,8 +102,18 @@ function drawSprites() {
 
 
 document.addEventListener('keydown', (e) => {
+
+    // ctx.translate(bird.posX, bird.posY);
+    // ctx.rotate(-30 + Math.PI / 2.0);
+    // ctx.drawImage(bird, bird.posX, bird.posY);
+    // ctx.rotate(30 - Math.PI / 2.0);
+    // ctx.translate(-bird.posX, -bird.posY); 
+
+    sounds.fly.play();
     bird.posY -= 40;
     if (gameOver.status) {
         window.location.reload();
     }
 });
+
+
