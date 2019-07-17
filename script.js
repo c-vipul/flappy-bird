@@ -1,7 +1,7 @@
 const canvas = document.querySelector('canvas');
 const ctx = canvas.getContext('2d');
 
-const images = ['assets/background-day.png', 'assets/background-night.png', 'assets/yellowbird-upflap.png', 'assets/yellowbird-upflap-up.png', 'assets/yellowbird-upflap-down.png','assets/yellowbird-midflap.png', 'assets/yellowbird-midflap-up.png', 'assets/yellowbird-upflap-down.png', 'assets/yellowbird-downflap.png', 'assets/yellowbird-downflap-up.png', 'assets/yellowbird-downflap-down.png','assets/pipe-green-top.png', 'assets/pipe-green.png', 'assets/base.png', 'assets/0.png', 'assets/1.png', 'assets/2.png', 'assets/3.png', 'assets/4.png', 'assets/5.png', 'assets/6.png', 'assets/7.png', 'assets/8.png', 'assets/9.png', 'assets/gameover.png'];
+const images = ['assets/background-day.png', 'assets/background-night.png', 'assets/yellowbird-upflap.png', 'assets/yellowbird-upflap-up.png', 'assets/yellowbird-midflap.png', 'assets/yellowbird-midflap-up.png', 'assets/yellowbird-upflap-down.png', 'assets/yellowbird-downflap.png', 'assets/yellowbird-downflap-up.png','assets/pipe-green-top.png', 'assets/pipe-green.png', 'assets/base.png', 'assets/0.png', 'assets/1.png', 'assets/2.png', 'assets/3.png', 'assets/4.png', 'assets/5.png', 'assets/6.png', 'assets/7.png', 'assets/8.png', 'assets/9.png', 'assets/gameover.png'];
 
 const sounds = {
     fly: new Audio('sounds/fly.mp3'),
@@ -10,7 +10,7 @@ const sounds = {
 
 const backgroundImgs = ['assets/background-day.png', 'assets/background-night.png'];
 const birdImgsUp = ['assets/yellowbird-upflap-up.png', 'assets/yellowbird-midflap-up.png', 'assets/yellowbird-downflap-up.png'];
-const birdImgsDown = ['assets/yellowbird-upflap-down.png', 'assets/yellowbird-midflap-down.png', 'assets/yellowbird-downflap-down.png'];
+const birdImgsDown = ['assets/yellowbird-midflap-down.png'];
 const birdImgsStraight = ['assets/yellowbird-upflap.png', 'assets/yellowbird-midflap.png', 'assets/yellowbird-downflap.png'];
 let birdImgs = birdImgsStraight;
 
@@ -58,7 +58,7 @@ function imgAssign() {
 
 let timeoutBirdStraight;
 let timeoutBirdDown;
-let timeoutGravity
+let timeoutGravity;
 timeoutBirdStraight = setTimeout(() => {
     birdImgs = birdImgsStraight;
     timeoutBirdDown = setTimeout(() => {
