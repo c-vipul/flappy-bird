@@ -15,7 +15,7 @@ const birdImgsStraight = ['assets/yellowbird-upflap.png', 'assets/yellowbird-mid
 let birdImgs = birdImgsStraight;
 
 const loadedImages = {};
-const promiseArray = images.map(function (imgurl) {
+const promiseArray = images.map((imgurl) => {
     return new Promise((resolve, reject) => {
         const img = new Image();
         img.onload = function () {
