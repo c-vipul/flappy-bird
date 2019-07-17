@@ -16,7 +16,7 @@ let birdImgs = birdImgsStraight;
 
 const loadedImages = {};
 const promiseArray = images.map(function (imgurl) {
-    const prom = new Promise(function (resolve, reject) {
+    return new Promise((resolve, reject) => {
         const img = new Image();
         img.onload = function () {
             loadedImages[imgurl] = img;
@@ -24,7 +24,6 @@ const promiseArray = images.map(function (imgurl) {
         };
         img.src = imgurl;
     });
-    return prom;
 });
 
 Promise.all(promiseArray)
