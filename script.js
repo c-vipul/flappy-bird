@@ -12,7 +12,7 @@ const backgroundImgs = ['assets/background-day.png', 'assets/background-night.pn
 const birdImgsUp = ['assets/yellowbird-upflap-up.png', 'assets/yellowbird-midflap-up.png', 'assets/yellowbird-downflap-up.png'];
 const birdImgsDown = ['assets/yellowbird-upflap-down.png', 'assets/yellowbird-midflap-down.png', 'assets/yellowbird-downflap-down.png'];
 const birdImgsStraight = ['assets/yellowbird-upflap.png', 'assets/yellowbird-midflap.png', 'assets/yellowbird-downflap.png'];
-let birdImgs = ['assets/yellowbird-upflap.png', 'assets/yellowbird-midflap.png', 'assets/yellowbird-downflap.png'];
+let birdImgs = birdImgsStraight;
 
 const loadedImages = {};
 const promiseArray = images.map(function (imgurl) {
@@ -68,7 +68,7 @@ timeoutBirdStraight = setTimeout(() => {
 
 
 const gap = 90;
-let gravity = 2;
+let gravity = 2.5;
 const pipes = [];
 pipes[0] = {
     posX: canvas.width,
@@ -119,10 +119,9 @@ document.addEventListener('keydown', (e) => {
     clearTimeout(timeoutBirdStraight);
     clearTimeout(timeoutBirdDown);
     clearTimeout(timeoutGravity);
-    gravity = 0;
+    gravity = -4;
     sounds.fly.play();
     birdImgs = birdImgsUp;
-    bird.posY -= 40;
     if (gameOver.status) {
         window.location.reload();
     }
@@ -130,7 +129,7 @@ document.addEventListener('keydown', (e) => {
 
 document.addEventListener('keyup', (e) => {
     timeoutGravity = setTimeout(() => {
-        gravity = 2;
+        gravity = 2.5;
     }, 100);
     timeoutBirdStraight = setTimeout(() => {
         birdImgs = birdImgsStraight;
