@@ -18,7 +18,7 @@ const loadedImages = {};
 const promiseArray = images.map((imgurl) => {
     return new Promise((resolve, reject) => {
         const img = new Image();
-        img.onload = function () {
+        img.onload = () => {
             loadedImages[imgurl] = img;
             resolve();
         };
@@ -58,6 +58,7 @@ function imgAssign() {
 let timeoutBirdStraight;
 let timeoutBirdDown;
 let timeoutGravity;
+
 timeoutBirdStraight = setTimeout(() => {
     birdImgs = birdImgsStraight;
     timeoutBirdDown = setTimeout(() => {
@@ -112,9 +113,7 @@ function drawSprites() {
     window.requestAnimationFrame(drawSprites);
 }
 
-
-
-document.addEventListener('keydown', (e) => {
+const keyPressResponse = e => {
     clearTimeout(timeoutBirdStraight);
     clearTimeout(timeoutBirdDown);
     clearTimeout(timeoutGravity);
@@ -124,9 +123,9 @@ document.addEventListener('keydown', (e) => {
     if (gameOver.status) {
         window.location.reload();
     }
-});
+};
 
-document.addEventListener('keyup', (e) => {
+const keyReleaseResponse = e => {
     timeoutGravity = setTimeout(() => {
         gravity = 2.5;
     }, 100);
@@ -136,6 +135,10 @@ document.addEventListener('keyup', (e) => {
             birdImgs = birdImgsDown;
         }, 300);
     }, 300);
-});
+};
 
+document.addEventListener('keydown', keyPressResponse);
+document.addEventListener('keyup', keyReleaseResponse);
+document.addEventListener('touchstart', keyPressResponse);
+document.addEventListener('touchend', keyReleaseResponse);
 
